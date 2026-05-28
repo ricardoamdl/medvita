@@ -10,6 +10,7 @@ class ClinicaModel {
   final String cidade;
   final String horario;
   final List<String> especialidades;
+  final String fotoPath;
 
   const ClinicaModel({
     this.id,
@@ -22,5 +23,6 @@ class ClinicaModel {
     this.cidade = '',
     this.horario = '',
     this.especialidades = const [],
+    this.fotoPath = '',
   });
 }

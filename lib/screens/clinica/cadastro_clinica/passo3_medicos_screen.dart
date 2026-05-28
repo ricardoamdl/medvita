@@ -196,7 +196,10 @@ class _Passo3MedicosScreenState extends State<Passo3MedicosScreen> {
                       .map(
                         (e) => DropdownMenuItem<int>(
                           value: e['id'] as int,
-                          child: Text(e['nome'] as String),
+                          child: Text(
+                            e['nome'] as String,
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         ),
                       )
                       .toList(),

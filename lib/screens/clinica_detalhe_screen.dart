@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/clinica_model.dart';
 import 'agendamento_screen.dart';
@@ -45,8 +46,34 @@ class ClinicaDetalheScreen extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
-                  // Fundo azul céu
-                  Container(color: const Color(0xFFB8D9F0)),
+                  // Imagem da clínica quando houver
+                  if (clinica.fotoPath.isNotEmpty)
+                    Positioned.fill(
+                      child: Image.file(
+                        File(clinica.fotoPath),
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  else
+                    // Fundo azul céu
+                    Container(color: const Color(0xFFB8D9F0)),
+
+                  // Sobreposição leve para contraste do texto
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.25),
+                            Colors.transparent,
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+
                   // Nuvens decorativas
                   Positioned(top: 40, left: 40, child: _buildNuvem(80, 30)),
                   Positioned(top: 30, right: 60, child: _buildNuvem(60, 22)),

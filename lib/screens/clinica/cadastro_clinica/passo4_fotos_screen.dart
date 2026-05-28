@@ -150,6 +150,7 @@ class _Passo4FotosScreenState extends State<Passo4FotosScreen> {
             TextField(
               controller: _descricaoController,
               maxLines: 4,
+              style: const TextStyle(color: Colors.black, fontSize: 14),
               decoration: InputDecoration(
                 hintText: 'descrição...',
                 hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),

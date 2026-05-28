@@ -321,6 +321,10 @@ class _Passo5AgendaScreenState extends State<Passo5AgendaScreen> {
                           child: TextField(
                             controller: _horarioController,
                             keyboardType: TextInputType.datetime,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
                             decoration: InputDecoration(
                               hintText: 'ex: 08:00',
                               hintStyle: TextStyle(

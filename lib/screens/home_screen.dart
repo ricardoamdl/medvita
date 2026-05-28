@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/clinica_model.dart';
 import '../theme/app_theme.dart';
@@ -37,10 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       appBar: _buildAppBar(),
       drawer: _buildDrawer(),
-      body: Column(children: [
-        _buildBuscaEFiltros(),
-        Expanded(child: _buildListaClinicas()),
-      ]),
+      body: Column(
+        children: [
+          _buildBuscaEFiltros(),
+          Expanded(child: _buildListaClinicas()),
+        ],
+      ),
     );
   }
 
@@ -101,15 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.local_hospital_outlined,
-                    size: 64, color: Colors.grey.shade300),
+                Icon(
+                  Icons.local_hospital_outlined,
+                  size: 64,
+                  color: Colors.grey.shade300,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   'Nenhuma clínica cadastrada',
-                  style: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.grey.shade400, fontSize: 16),
                 ),
               ],
             ),
@@ -137,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           TextField(
             controller: _buscaController,
+            style: const TextStyle(color: Colors.black, fontSize: 14),
             decoration: InputDecoration(
               hintText: 'Buscar clínica...',
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
@@ -215,27 +219,47 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
         clipBehavior: Clip.hardEdge,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Imagem da clínica quando disponível, senão decoração padrão
             Container(
               height: 140,
               color: const Color(0xFFB8D9F0),
-              child: Stack(
-                children: [
-                  Container(color: const Color(0xFFB8D9F0)),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 60),
-                      painter: _ColinaPainter(),
+              child:
+                  (clinica.fotoPath.isNotEmpty &&
+                      File(clinica.fotoPath).existsSync())
+                  ? ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                      child: Image.file(
+                        File(clinica.fotoPath),
+                        width: double.infinity,
+                        height: 140,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Stack(
+                      children: [
+                        Container(color: const Color(0xFFB8D9F0)),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: CustomPaint(
+                            size: const Size(double.infinity, 60),
+                            painter: _ColinaPainter(),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
             Padding(
               padding: const EdgeInsets.all(12),

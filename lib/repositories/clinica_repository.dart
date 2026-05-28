@@ -7,22 +7,31 @@ class ClinicaRepository {
     final db = await DatabaseHelper.database;
     final resultado = await db.query('clinicas');
 
-    return resultado
-        .map(
-          (row) => ClinicaModel(
-            id: row['id'] as int?,
-            nome: row['nome'] as String,
-            especialidade: '', // virá do join futuramente
-            avaliacao: (row['avaliacao'] as num?)?.toDouble() ?? 0.0,
-            totalAvaliacoes: 0,
-            distanciaKm: (row['distancia_km'] as num?)?.toDouble() ?? 0.0,
-            endereco: '${row['endereco'] ?? ''}, ${row['bairro'] ?? ''}',
-            cidade: row['cidade'] as String? ?? '',
-            horario: row['horario'] as String? ?? '',
-            especialidades: [], // carregadas separadamente
-          ),
-        )
-        .toList();
+    // Para cada clínica, carregamos suas especialidades e foto
+    final List<ClinicaModel> lista = [];
+    for (final row in resultado) {
+      final id = row['id'] as int?;
+      final foto = row['foto_path'] as String? ?? '';
+      final esp = id != null ? await buscarEspecialidades(id) : <String>[];
+
+      lista.add(
+        ClinicaModel(
+          id: id,
+          nome: row['razao_social'] as String? ?? 'Clínica sem nome',
+          especialidade: esp.isNotEmpty ? esp.first : '',
+          avaliacao: (row['avaliacao'] as num?)?.toDouble() ?? 0.0,
+          totalAvaliacoes: 0,
+          distanciaKm: (row['distancia_km'] as num?)?.toDouble() ?? 0.0,
+          endereco: '${row['rua'] ?? ''}, ${row['numero'] ?? ''}',
+          cidade: row['cidade'] as String? ?? '',
+          horario: row['horario'] as String? ?? '',
+          especialidades: esp,
+          fotoPath: foto,
+        ),
+      );
+    }
+
+    return lista;
   }
 
   // Busca especialidades de uma clínica específica

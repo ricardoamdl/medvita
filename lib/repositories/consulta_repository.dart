@@ -13,13 +13,17 @@ class ConsultaRepository {
     try {
       await db.transaction((txn) async {
         // 1. Bloqueia o horário para outros usuários
-        await txn.update(
+        final updated = await txn.update(
           'horarios',
           {'disponivel': 0},
           where: 'id = ? AND disponivel = 1',
           whereArgs: [horarioId],
         );
 
+        // Se nenhum registro foi atualizado, o horário já foi reservado
+        if (updated == 0) {
+          throw Exception('Horário indisponível');
+        }
         // 2. Registra a consulta
         await txn.insert('consultas', {
           'usuarios_id': usuarioId,
@@ -47,7 +51,7 @@ class ConsultaRepository {
       SELECT 
         c.id,
         c.status,
-        cl.nome      as clinica,
+        cl.razao_social      as clinica,
         cl.endereco  as endereco,
         cl.cidade    as cidade,
         m.nome       as medico,

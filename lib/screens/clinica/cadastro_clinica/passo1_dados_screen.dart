@@ -182,6 +182,7 @@ class _Passo1DadosScreenState extends State<Passo1DadosScreen> {
       child: TextField(
         controller: controller,
         keyboardType: tipo,
+        style: const TextStyle(color: Colors.black, fontSize: 14),
         decoration: InputDecoration(
           hintText: label,
           hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),

@@ -20,6 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _senhaController = TextEditingController();
   bool _isPessoaJuridica = false;
   bool _carregando = false;
+  bool souClinica = false;
+  bool isLoading = false;
+  bool _senhaVisivel = false;
 
   @override
   void dispose() {
@@ -284,8 +287,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }) {
     return TextField(
       controller: controller,
-      obscureText: obscure,
-      style: const TextStyle(color: Colors.white, letterSpacing: 1),
+      obscureText: obscure && !_senhaVisivel,
+      style: const TextStyle(color: Colors.black, letterSpacing: 1),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(
@@ -294,6 +297,16 @@ class _LoginScreenState extends State<LoginScreen> {
           fontSize: 13,
         ),
         prefixIcon: Icon(icon, color: Colors.white54, size: 20),
+        suffixIcon: obscure
+            ? IconButton(
+                icon: Icon(
+                  _senhaVisivel ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.white54,
+                  size: 20,
+                ),
+                onPressed: () => setState(() => _senhaVisivel = !_senhaVisivel),
+              )
+            : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Colors.white30),

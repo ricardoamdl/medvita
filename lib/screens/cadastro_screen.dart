@@ -19,6 +19,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
   final _confirmarSenhaController = TextEditingController();
 
   bool _isPessoaJuridica = false; // controla o toggle
+  bool _senhaVisivel = false;
+  bool _confirmarSenhaVisivel = false;
 
   @override
   void dispose() {
@@ -154,12 +156,14 @@ class _CadastroScreenState extends State<CadastroScreen> {
                     controller: _senhaController,
                     label: 'SENHA',
                     obscure: true,
+                    isConfirmarSenha: false,
                   ),
                   const SizedBox(height: 16),
                   _buildTextField(
                     controller: _confirmarSenhaController,
                     label: 'CONFIRMAR SENHA',
                     obscure: true,
+                    isConfirmarSenha: true,
                   ),
 
                   const SizedBox(height: 16),
@@ -223,11 +227,16 @@ class _CadastroScreenState extends State<CadastroScreen> {
     required TextEditingController controller,
     required String label,
     bool obscure = false,
+    bool isConfirmarSenha = false,
   }) {
+    final senhaVisivelAtual = isConfirmarSenha
+        ? _confirmarSenhaVisivel
+        : _senhaVisivel;
+
     return TextField(
       controller: controller,
-      obscureText: obscure,
-      style: const TextStyle(color: Colors.white, letterSpacing: 1),
+      obscureText: obscure && !senhaVisivelAtual,
+      style: const TextStyle(color: Colors.black, letterSpacing: 1),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(
@@ -235,6 +244,22 @@ class _CadastroScreenState extends State<CadastroScreen> {
           letterSpacing: 1.5,
           fontSize: 13,
         ),
+        suffixIcon: obscure
+            ? IconButton(
+                icon: Icon(
+                  senhaVisivelAtual ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.white54,
+                  size: 20,
+                ),
+                onPressed: () => setState(() {
+                  if (isConfirmarSenha) {
+                    _confirmarSenhaVisivel = !_confirmarSenhaVisivel;
+                  } else {
+                    _senhaVisivel = !_senhaVisivel;
+                  }
+                }),
+              )
+            : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Colors.white30),

@@ -60,6 +60,16 @@ class _ConfirmacaoAgendamentoScreenState
   }
 
   Future<void> _confirmarAgendamento() async {
+    if (SessaoUsuario.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Faça login para confirmar o agendamento.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     setState(() => _salvando = true);
 
     final sucesso = await ConsultaRepository.agendar(
