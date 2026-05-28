@@ -1,7 +1,8 @@
 # 🏥 MedVita — Saúde na Palma da Sua Mão
 
 <p align="center">
-  <img src="assets/logo.png" alt="MedVita Logo" width="120"/>
+  <span style="font-size: 48px;">❤️📅</span><br/>
+  <strong style="font-size: 32px; color: #0D5C35;">MedVita</strong>
 </p>
 
 <p align="center">
@@ -199,10 +200,3 @@ Este projeto foi desenvolvido para fins acadêmicos.
 <p align="center">
   Feito com 💚 e muito Flutter
 </p>
-
----
-
-## 📝 Atualizações Recentes
-
-- 2026-05-27: Corrigido fluxo de agendamento — agora o sistema valida a disponibilidade
-  do horário antes de confirmar a consulta e evita erro quando o usuário não está logado.
